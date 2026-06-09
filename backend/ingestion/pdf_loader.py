@@ -1,18 +1,20 @@
 import fitz
+import os
+def extract_text_from_pdf(folder_path):
+    pages=[]
+    for filename in os.listdir(folder_path):
 
-def extract_text_from_pdf(pdf_path):
+        if filename.endswith(".pdf"):
 
-    doc = fitz.open(pdf_path)
-    print("Total pages in PDF:", len(doc))
+            pdf_path = os.path.join(folder_path, filename)
 
-    text = ""
-    pages = []
+            doc = fitz.open(pdf_path)
 
-    for page_num, page in enumerate(doc):
-        print(f"Page {page_num + 1} text length:", len(page.get_text()))
-        pages.append({
-            "text": page.get_text(),
-            "page": page_num + 1
-        })
+            for page_num, page in enumerate(doc):
+                pages.append({
+                    "text": page.get_text(),
+                    "page": page_num + 1,
+                    "source": filename
+                })
 
     return pages
