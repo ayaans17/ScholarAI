@@ -7,9 +7,18 @@ llm = ChatOllama(
 
 def generate_answer(query, retrieved_docs):
 
-    context = "\n\n".join(
-        [doc.page_content for doc in retrieved_docs]
-    )
+    # context = "\n\n".join(
+    #     [doc.page_content for doc in retrieved_docs]
+    # )
+    context =""
+
+    for doc in retrieved_docs:
+        context += f"""
+        [Page {doc.metadata['page']}]
+
+        {doc.page_content}
+
+        """
 
     prompt = f"""
     You are an academic research assistant.
