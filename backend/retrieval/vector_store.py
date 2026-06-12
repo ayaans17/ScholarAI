@@ -6,10 +6,20 @@ embedding_model = HuggingFaceEmbeddings(
 )
 
 def create_vector_store(chunks):
+    texts = [chunk["text"] for chunk in chunks]
+
+    metadatas = [
+        {
+            "page": chunk["page"],
+            "source": chunk["source"]
+        }
+        for chunk in chunks
+    ]
 
     vector_store = FAISS.from_texts(
-        texts=chunks,
-        embedding=embedding_model
+        texts=texts,
+        embedding=embedding_model,
+        metadatas=metadatas
     )
 
     return vector_store
